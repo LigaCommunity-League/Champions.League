@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <style>
+    /* Basic styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #b6b6b6;
+      color: rgb(255, 255, 255);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3e3e3e;
+    }
+  </style>
+</head>
+<body style="background-color:rgb(22, 22, 50) ">
+  <div class="container" style="background-color: rgb(38, 38, 91);">
+    <h2 style="color: white;">Bidding</h2>
+    <form id="orderForm">
+      
+      <label for="phone"></label>
+      <input type="tel" id="phone" name="Amount" required placeholder="Bid Amount In Million">
+      
+      <label for="product"></label>
+      <select id="product" name="Club" required>
+        <option value="No Club Selected">Select Your Club</option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+      </select>
+      
+      
+      <button type="submit" style="background-color:  #ee1e46;;">Bid</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('orderForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Get form data
+      var formData = new FormData(this);
+      var formDataJSON = {  };
+      formData.forEach(function(value, key){
+        formDataJSON[key] = value;
+      });
+      var jsonData = JSON.stringify(formDataJSON);
+
+      // Send data to Telegram bot
+      var botToken = '7013546435:AAG2IyoB1MtT2ni5YasNiSBBRCxj12yBsok';
+      var chatID = '6580559134';
+      var message = "Bid : \n\n" + jsonData;
+
+      fetch('https://api.telegram.org/bot' + botToken + '/sendMessage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: chatID,
+          text: message
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response is not ok');
+        }
+        alert('Applied Successfully');
+        document.getElementById('orderForm').reset(); // Reset form after successful submission
+      })
+      .catch(error => {
+        console.error('There was a problem with your fetch operation:', error);
+        alert('Failed, Please try again later.');
+      });
+    });
+  </script>
+</body>
+</html>
